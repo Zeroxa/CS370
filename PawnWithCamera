@@ -106,5 +106,11 @@ AMyActorToSpawn::AMyActorToSpawn()
         }
     }
 }
-
+if (EndPlayReason == EEndPlayReason::Destroyed && !bWasCaught)
+    {
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("OOH you MISSED!"));
+        }
+    }
 
