@@ -56,3 +56,55 @@ public:
 
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+//Modify the AMyActorToSpawn class to have a boolean flag indicating if the actor was caught by the player or not.
+
+//Header (MyActorToSpawn.h):
+//Add the boolean flag.
+
+public:
+    // ... other members ...
+
+    // Flag to indicate if the actor was caught by the player
+    bool bWasCaught;
+
+// Constructor
+AMyActorToSpawn::AMyActorToSpawn()
+{
+    // ... other initializations ...
+
+    bWasCaught = false;
+}
+
+//Set the flag when the actor is caught:
+
+//In the OnOverlap function (or any function where you detect that the actor was caught by the player), set the bWasCaught flag to true before you destroy the actor.
+//void APawnWithCamera::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+    // ... your other code ...
+
+    AMyActorToSpawn *spawnedActor = Cast<AMyActorToSpawn>(OtherActor);
+    if (spawnedActor)
+    {
+        // Indicate that the actor was caught
+        spawnedActor->bWasCaught = true;
+        
+        // ... your other code ...
+    }
+}
+//Check the flag in the EndPlay function:
+
+//Override the EndPlay function in AMyActorToSpawn. Check the bWasCaught flag, and if it's false, display the "OOH you MISSED!" message.
+//void AMyActorToSpawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    if (!bWasCaught)
+    {
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("OOH you MISSED!"));
+        }
+    }
+}
+
+
