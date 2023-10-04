@@ -1,0 +1,52 @@
+void APawnWithCamera::ZoomIn()
+{
+    // ... [previous code]
+
+    if (myNewActor)
+    {
+        // ... [previous code]
+
+        if (GEngine)
+        {
+            FString debugMessage = FString::Printf(TEXT("Object (lifespan %f s) spawned with offsets %f %f %f"), 
+                 myNewActor->GetLifeSpan(), ForwardDist, RightDist, UpDist);
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, debugMessage);
+            
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Inputs disabled"));
+        }
+    }
+}
+//In the Tick function, right after setting bIsRotatingCamera to false, add:
+if(GEngine)
+{
+    GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Input enabled - catch your object before it dies!"));
+}
+
+void APawnWithCamera::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+    // ... [previous code]
+
+    if (spawnedActor)
+    {
+        // ... [previous code]
+
+        if (GEngine)
+        {
+            FString debugMessage = FString::Printf(TEXT("GOT YA!! Kill count = %d / %d"), TotalKills, TotalSpawned);
+            GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, debugMessage);
+        }
+    }
+}
+
+void AMyActorToSpawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    if(EndPlayReason == EEndPlayReason::Destroyed)
+    {
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, TEXT("OOH you MISSED!"));
+        }
+    }
+}
